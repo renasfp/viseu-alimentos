@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Dados de Alimentos - Supermercados Viseu</title>
+    <style>
+        :root {
+            --color-bg-base: #fcfcf9;
+            --color-surface: #fffff d;
+            --color-text: #134252;
+            --color-text-secondary: #626c71;
+            --color-primary: #21808d;
+            --color-primary-hover: #1d7480;
+            --color-border: rgba(94, 82, 64, 0.2);
+            --color-card-border: rgba(94, 82, 64, 0.12);
+            --color-success: #21808d;
+            --color-secondary: rgba(94, 82, 64, 0.12);
+            --color-secondary-hover: rgba(94, 82, 64, 0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg-base: #1f2121;
+                --color-surface: #262828;
+                --color-text: #f5f5f5;
+                --color-text-secondary: rgba(167, 169, 169, 0.7);
+                --color-primary: #32b8c6;
+                --color-primary-hover: #2da6b2;
+                --color-border: rgba(119, 124, 124, 0.3);
+                --color-card-border: rgba(119, 124, 124, 0.2);
+                --color-success: #32b8c6;
+                --color-secondary: rgba(119, 124, 124, 0.15);
+                --color-secondary-hover: rgba(119, 124, 124, 0.25);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg-base);
+            color: var(--color-text);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .controls {
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: var(--color-bg-base);
+            color: var(--color-text);
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input:focus {
+            outline: 2px solid var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stats {
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .food-table {
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--color-secondary);
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        th:first-child {
+            width: 50px;
+            text-align: center;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--color-card-border);
+            color: var(--color-text);
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background: var(--color-secondary);
+        }
+
+        tbody tr.selected {
+            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(33, 128, 141, 0.08) 100%);
+        }
+
+        .table-checkbox {
+            text-align: center;
+        }
+
+        .table-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .food-grid {
+            display: none;
+        }
+
+        .food-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .food-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .food-card.selected {
+            border-color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(33, 128, 141, 0.05) 100%);
+        }
+
+        .checkbox-wrapper {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .food-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: var(--color-bg-base);
+        }
+
+        .food-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 8px;
+            padding-right: 30px;
+            line-height: 1.3;
+        }
+
+        .food-category {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--color-secondary);
+            color: var(--color-text);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .food-market {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .market-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .btn-group {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: var(--color-text);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group select {
+            margin-top: 5px;
+        }
+
+        .selected-count {
+            background: var(--color-primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+
+        .delete-mode-active tbody tr:hover {
+            background: rgba(255, 84, 89, 0.1);
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff5459;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .delete-mode-active .delete-btn {
+            display: inline-block;
+        }
+
+        .btn-danger {
+            background: #c0152f;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #a01228;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Base de Dados de Alimentos</h1>
+            <p class="subtitle">Supermercados de Viseu - Portugal | GitHub Pages Edition</p>
+        </header>
+
+        <div class="controls">
+            <div class="filter-group">
+                <label for="categoryFilter">Categoria</label>
+                <select id="categoryFilter">
+                    <option value="">Todas as Categorias</option>
+                    <option value="Frutas e Legumes">Frutas e Legumes</option>
+                    <option value="Carnes e Peixes">Carnes e Peixes</option>
+                    <option value="Laticínios">Laticínios</option>
+                    <option value="Mercearia">Mercearia</option>
+                    <option value="Padaria">Padaria</option>
+                    <option value="Bebidas">Bebidas</option>
+                    <option value="Congelados">Congelados</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="marketFilter">Supermercado</label>
+                <select id="marketFilter">
+                    <option value="">Todos os Supermercados</option>
+                    <option value="Continente">Continente</option>
+                    <option value="Pingo Doce">Pingo Doce</option>
+                    <option value="Lidl">Lidl</option>
+                    <option value="Aldi">Aldi</option>
+                    <option value="Mercadona">Mercadona</option>
+                    <option value="Minipreço">Minipreço</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="searchInput">Pesquisar</label>
+                <input type="text" id="searchInput" placeholder="Nome do alimento...">
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-label">Total de alimentos:</span>
+                <span class="stat-value" id="totalCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Selecionados:</span>
+                <span class="stat-value" id="selectedCount">0</span>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="selectAll()">✓ Selecionar Todos</button>
+                <button class="btn btn-secondary" onclick="clearSelection()">✗ Limpar Seleção</button>
+                <button class="btn btn-primary" onclick="exportToPDF()">📥 Exportar PDF</button>
+                <button class="btn btn-secondary" onclick="openAddModal()">➕ Adicionar Alimento</button>
+                <button class="btn btn-danger" id="deleteModeBtn" onclick="toggleDeleteMode()">🗑️ Modo Eliminar</button>
+                <button class="btn btn-secondary" onclick="exportDatabase()">💾 Exportar JSON</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📂 Importar JSON</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importDatabase(event)">
+            </div>
+        </div>
+
+        <div class="food-table" id="foodTableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>✓</th>
+                        <th>Imagem</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Supermercado</th>
+                        <th id="deleteHeader" style="display: none;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="foodTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/>
+                <line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2"/>
+            </svg>
+            <h3>Nenhum alimento encontrado</h3>
+            <p>Tente ajustar os filtros ou adicione novos alimentos à base de dados.</p>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Adicionar Alimento</h2>
+                <button class="close-btn" onclick="closeAddModal()">&times;</button>
+            </div>
+            <form id="addFoodForm" onsubmit="addFood(event)">
+                <div class="form-group">
+                    <label for="foodName">Nome do Alimento *</label>
+                    <input type="text" id="foodName" required>
+                </div>
+                <div class="form-group">
+                    <label for="foodCategory">Categoria *</label>
+                    <select id="foodCategory" required>
+                        <option value="">Selecione...</option>
+                        <option value="Frutas e Legumes">Frutas e Legumes</option>
+                        <option value="Carnes e Peixes">Carnes e Peixes</option>
+                        <option value="Laticínios">Laticínios</option>
+                        <option value="Mercearia">Mercearia</option>
+                        <option value="Padaria">Padaria</option>
+                        <option value="Bebidas">Bebidas</option>
+                        <option value="Congelados">Congelados</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="foodMarket">Supermercado *</label>
+                    <select id="foodMarket" required>
+                        <option value="">Selecione...</option>
+                        <option value="Continente">Continente</option>
+                        <option value="Pingo Doce">Pingo Doce</option>
+                        <option value="Lidl">Lidl</option>
+                        <option value="Aldi">Aldi</option>
+                        <option value="Mercadona">Mercadona</option>
+                        <option value="Minipreço">Minipreço</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="foodImage">URL da Imagem (opcional)</label>
+                    <input type="text" id="foodImage" placeholder="https://...">
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const STORAGE_KEY = 'viseu_foods_database';
+        let deleteModeActive = false;
+
+        function loadFoodsFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error('Erro ao carregar base de dados:', e);
+                }
+            }
+            return getDefaultFoods();
+        }
+
+        function saveFoodsToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(foods));
+            } catch (e) {
+                console.error('Erro ao guardar base de dados:', e);
+            }
+        }
+
+        function getDefaultFoods() {
+            return [
+            {
+                id: 1,
+                name: 'Banana',
+                category: 'Frutas e Legumes',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&h=300&fit=crop'
+            },
+            {
+                id: 2,
+                name: 'Leite Mimosa',
+                category: 'Laticínios',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=300&fit=crop'
+            },
+            {
+                id: 3,
+                name: 'Pão de Forma',
+                category: 'Padaria',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop'
+            },
+            {
+                id: 4,
+                name: 'Frango',
+                category: 'Carnes e Peixes',
+                market: 'Aldi',
+                image: 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=400&h=300&fit=crop'
+            },
+            {
+                id: 5,
+                name: 'Arroz Agulha',
+                category: 'Mercearia',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop'
+            },
+            {
+                id: 6,
+                name: 'Tomate',
+                category: 'Frutas e Legumes',
+                market: 'Mercadona',
+                image: 'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&h=300&fit=crop'
+            },
+            {
+                id: 7,
+                name: 'Iogurte Natural',
+                category: 'Laticínios',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop'
+            },
+            {
+                id: 8,
+                name: 'Água Mineral',
+                category: 'Bebidas',
+                market: 'Minipreço',
+                image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&h=300&fit=crop'
+            },
+            {
+                id: 9,
+                name: 'Bacalhau Congelado',
+                category: 'Congelados',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=300&fit=crop'
+            },
+            {
+                id: 10,
+                name: 'Maçã',
+                category: 'Frutas e Legumes',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=300&fit=crop'
+            },
+            {
+                id: 11,
+                name: 'Queijo Serra da Estrela',
+                category: 'Laticínios',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop'
+            },
+            {
+                id: 12,
+                name: 'Azeite',
+                category: 'Mercearia',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=300&fit=crop'
+            },
+            {
+                id: 13,
+                name: 'Laranja',
+                category: 'Frutas e Legumes',
+                market: 'Mercadona',
+                image: 'https://images.unsplash.com/photo-1547514701-42782101795e?w=400&h=300&fit=crop'
+            },
+            {
+                id: 14,
+                name: 'Batata',
+                category: 'Frutas e Legumes',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop'
+            },
+            {
+                id: 15,
+                name: 'Cenoura',
+                category: 'Frutas e Legumes',
+                market: 'Aldi',
+                image: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&h=300&fit=crop'
+            },
+            {
+                id: 16,
+                name: 'Alface',
+                category: 'Frutas e Legumes',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=400&h=300&fit=crop'
+            },
+            {
+                id: 17,
+                name: 'Cebola',
+                category: 'Frutas e Legumes',
+                market: 'Minipreço',
+                image: 'https://images.unsplash.com/photo-1508747703725-719777637510?w=400&h=300&fit=crop'
+            },
+            {
+                id: 18,
+                name: 'Alho',
+                category: 'Mercearia',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1588958302990-8e3c2c6ab5da?w=400&h=300&fit=crop'
+            },
+            {
+                id: 19,
+                name: 'Carne de Vaca',
+                category: 'Carnes e Peixes',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop'
+            },
+            {
+                id: 20,
+                name: 'Carne de Porco',
+                category: 'Carnes e Peixes',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?w=400&h=300&fit=crop'
+            },
+            {
+                id: 21,
+                name: 'Salmão',
+                category: 'Carnes e Peixes',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=300&fit=crop'
+            },
+            {
+                id: 22,
+                name: 'Sardinha',
+                category: 'Carnes e Peixes',
+                market: 'Mercadona',
+                image: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=400&h=300&fit=crop'
+            },
+            {
+                id: 23,
+                name: 'Atum Enlatado',
+                category: 'Mercearia',
+                market: 'Aldi',
+                image: 'https://images.unsplash.com/photo-1520961769225-5aed1b479db5?w=400&h=300&fit=crop'
+            },
+            {
+                id: 24,
+                name: 'Massa Esparguete',
+                category: 'Mercearia',
+                market: 'Minipreço',
+                image: 'https://images.unsplash.com/photo-1551462147-37e8b6751de7?w=400&h=300&fit=crop'
+            },
+            {
+                id: 25,
+                name: 'Feijão',
+                category: 'Mercearia',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&h=300&fit=crop'
+            },
+            {
+                id: 26,
+                name: 'Grão-de-Bico',
+                category: 'Mercearia',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1627669455531-e59a5ca8a1dc?w=400&h=300&fit=crop'
+            },
+            {
+                id: 27,
+                name: 'Manteiga',
+                category: 'Laticínios',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&h=300&fit=crop'
+            },
+            {
+                id: 28,
+                name: 'Queijo Flamengo',
+                category: 'Laticínios',
+                market: 'Aldi',
+                image: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=300&fit=crop'
+            },
+            {
+                id: 29,
+                name: 'Ovos',
+                category: 'Laticínios',
+                market: 'Mercadona',
+                image: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400&h=300&fit=crop'
+            },
+            {
+                id: 30,
+                name: 'Natas',
+                category: 'Laticínios',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&h=300&fit=crop'
+            },
+            {
+                id: 31,
+                name: 'Croissant',
+                category: 'Padaria',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop'
+            },
+            {
+                id: 32,
+                name: 'Bolo de Arroz',
+                category: 'Padaria',
+                market: 'Minipreço',
+                image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&h=300&fit=crop'
+            },
+            {
+                id: 33,
+                name: 'Pão Integral',
+                category: 'Padaria',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1585478259715-876acc5be8eb?w=400&h=300&fit=crop'
+            },
+            {
+                id: 34,
+                name: 'Sumo de Laranja',
+                category: 'Bebidas',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=300&fit=crop'
+            },
+            {
+                id: 35,
+                name: 'Coca-Cola',
+                category: 'Bebidas',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&h=300&fit=crop'
+            },
+            {
+                id: 36,
+                name: 'Cerveja Super Bock',
+                category: 'Bebidas',
+                market: 'Mercadona',
+                image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop'
+            },
+            {
+                id: 37,
+                name: 'Vinho Tinto',
+                category: 'Bebidas',
+                market: 'Aldi',
+                image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=300&fit=crop'
+            },
+            {
+                id: 38,
+                name: 'Café',
+                category: 'Bebidas',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop'
+            },
+            {
+                id: 39,
+                name: 'Gelado de Baunilha',
+                category: 'Congelados',
+                market: 'Continente',
+                image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop'
+            },
+            {
+                id: 40,
+                name: 'Pizza Congelada',
+                category: 'Congelados',
+                market: 'Pingo Doce',
+                image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop'
+            },
+            {
+                id: 41,
+                name: 'Ervilhas Congeladas',
+                category: 'Congelados',
+                market: 'Minipreço',
+                image: 'https://images.unsplash.com/photo-1568584711271-ca2e24487e0f?w=400&h=300&fit=crop'
+            },
+            {
+                id: 42,
+                name: 'Espinafres Congelados',
+                category: 'Congelados',
+                market: 'Lidl',
+                image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=300&fit=crop'
+            }
+        ];
+        }
+
+        let foods = loadFoodsFromStorage();
+        let selectedFoods = new Set();
+        let nextId = Math.max(...foods.map(f => f.id), 0) + 1;
+
+        function renderFoods() {
+            const tableBody = document.getElementById('foodTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const marketFilter = document.getElementById('marketFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            const filteredFoods = foods.filter(food => {
+                const matchCategory = !categoryFilter || food.category === categoryFilter;
+                const matchMarket = !marketFilter || food.market === marketFilter;
+                const matchSearch = !searchTerm || food.name.toLowerCase().includes(searchTerm);
+                return matchCategory && matchMarket && matchSearch;
+            });
+
+            document.getElementById('totalCount').textContent = filteredFoods.length;
+
+            if (filteredFoods.length === 0) {
+                tableBody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tableBody.innerHTML = filteredFoods.map(food => `
+                <tr class="${selectedFoods.has(food.id) ? 'selected' : ''}" data-id="${food.id}">
+                    <td class="table-checkbox">
+                        <input type="checkbox" 
+                               ${selectedFoods.has(food.id) ? 'checked' : ''} 
+                               onchange="toggleSelection(${food.id})">
+                    </td>
+                    <td>
+                        <img src="${food.image || "#"}" alt="${food.name}" class="table-image" onerror="">
+                    </td>
+                    <td><strong>${food.name}</strong></td>
+                    <td>${food.category}</td>
+                    <td>${food.market}</td>
+                    <td style="display: ${deleteModeActive ? 'table-cell' : 'none'};">
+                        <button class="delete-btn" onclick="deleteFood(${food.id})" title="Eliminar">✕</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            updateSelectedCount();
+        }
+
+        function toggleSelection(id) {
+            if (selectedFoods.has(id)) {
+                selectedFoods.delete(id);
+            } else {
+                selectedFoods.add(id);
+            }
+            renderFoods();
+        }
+
+        function updateSelectedCount() {
+            document.getElementById('selectedCount').textContent = selectedFoods.size;
+        }
+
+        function selectAll() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const marketFilter = document.getElementById('marketFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            const filteredFoods = foods.filter(food => {
+                const matchCategory = !categoryFilter || food.category === categoryFilter;
+                const matchMarket = !marketFilter || food.market === marketFilter;
+                const matchSearch = !searchTerm || food.name.toLowerCase().includes(searchTerm);
+                return matchCategory && matchMarket && matchSearch;
+            });
+
+            filteredFoods.forEach(food => selectedFoods.add(food.id));
+            renderFoods();
+        }
+
+        function clearSelection() {
+            selectedFoods.clear();
+            renderFoods();
+        }
+
+        function exportToPDF() {
+            if (selectedFoods.size === 0) {
+                alert('Por favor, selecione pelo menos um alimento para exportar.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(18);
+            doc.text('Lista de Alimentos Selecionados', 20, 20);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text('Supermercados de Viseu', 20, 28);
+            doc.text(`Data: ${new Date().toLocaleDateString('pt-PT')}`, 20, 34);
+
+            let yPosition = 50;
+            const selectedFoodsList = foods.filter(food => selectedFoods.has(food.id));
+
+            selectedFoodsList.forEach((food, index) => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.text(`${index + 1}. ${food.name}`, 20, yPosition);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.text(`Categoria: ${food.category}`, 30, yPosition + 6);
+                doc.text(`Supermercado: ${food.market}`, 30, yPosition + 12);
+
+                doc.setDrawColor(200, 200, 200);
+                doc.line(20, yPosition + 16, 190, yPosition + 16);
+
+                yPosition += 24;
+            });
+
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'italic');
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.text(`Página ${i} de ${pageCount}`, 20, 290);
+                doc.text(`Total de alimentos: ${selectedFoods.size}`, 160, 290);
+            }
+
+            doc.save(`alimentos-viseu-${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('addFoodForm').reset();
+        }
+
+        function addFood(event) {
+            event.preventDefault();
+
+            const newFood = {
+                id: nextId++,
+                name: document.getElementById('foodName').value,
+                category: document.getElementById('foodCategory').value,
+                market: document.getElementById('foodMarket').value,
+                image: document.getElementById('foodImage').value || `https://via.placeholder.com/400x300/21808d/ffffff?text=${encodeURIComponent(document.getElementById('foodName').value)}`
+            };
+
+            foods.push(newFood);
+            saveFoodsToStorage();
+            closeAddModal();
+            renderFoods();
+        }
+
+        function deleteFood(id) {
+            if (confirm('Tem a certeza que deseja eliminar este alimento da base de dados?')) {
+                foods = foods.filter(food => food.id !== id);
+                selectedFoods.delete(id);
+                saveFoodsToStorage();
+                renderFoods();
+            }
+        }
+
+        function toggleDeleteMode() {
+            deleteModeActive = !deleteModeActive;
+            const btn = document.getElementById('deleteModeBtn');
+            const container = document.getElementById('foodTableContainer');
+            const header = document.getElementById('deleteHeader');
+            
+            if (deleteModeActive) {
+                btn.textContent = '✓ Sair do Modo Eliminar';
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-secondary');
+                container.classList.add('delete-mode-active');
+                header.style.display = 'table-cell';
+            } else {
+                btn.textContent = '🗑️ Modo Eliminar';
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-danger');
+                container.classList.remove('delete-mode-active');
+                header.style.display = 'none';
+            }
+            
+            renderFoods();
+        }
+
+        function exportDatabase() {
+            const dataStr = JSON.stringify(foods, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `base-dados-alimentos-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importDatabase(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedFoods = JSON.parse(e.target.result);
+                        if (Array.isArray(importedFoods)) {
+                            foods = importedFoods;
+                            nextId = Math.max(...foods.map(f => f.id), 0) + 1;
+                            saveFoodsToStorage();
+                            renderFoods();
+                            alert('Base de dados importada com sucesso!');
+                        } else {
+                            alert('Formato de ficheiro inválido.');
+                        }
+                    } catch (error) {
+                        alert('Erro ao importar ficheiro: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        document.getElementById('categoryFilter').addEventListener('change', renderFoods);
+        document.getElementById('marketFilter').addEventListener('change', renderFoods);
+        document.getElementById('searchInput').addEventListener('input', renderFoods);
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('addModal');
+            if (event.target === modal) {
+                closeAddModal();
+            }
+        };
+
+        renderFoods();
+    </script>
+</body>
+</html>
