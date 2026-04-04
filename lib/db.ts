@@ -1,20 +1,55 @@
-import fs from "fs/promises";
-import path from "path";
-
+import {
+  deleteFoodNeon,
+  insertFoodNeon,
+  nextFoodIdNeon,
+  readFoodsNeon,
+  writeFoodsNeon,
+} from "./db-neon";
+import { nextFoodIdFromFoods, readFoodsFile, writeFoodsFile } from "./db-file";
 import type { Food } from "./types";
 
-const DATA_PATH = path.join(process.cwd(), "data", "foods.json");
+function hasRemoteDatabase(): boolean {
+  return Boolean(process.env.DATABASE_URL?.trim());
+}
 
 export async function readFoods(): Promise<Food[]> {
-  const raw = await fs.readFile(DATA_PATH, "utf-8");
-  return JSON.parse(raw) as Food[];
+  if (hasRemoteDatabase()) {
+    return readFoodsNeon();
+  }
+  return readFoodsFile();
 }
 
 export async function writeFoods(foods: Food[]): Promise<void> {
-  await fs.writeFile(DATA_PATH, JSON.stringify(foods, null, 2), "utf-8");
+  if (hasRemoteDatabase()) {
+    return writeFoodsNeon(foods);
+  }
+  return writeFoodsFile(foods);
 }
 
-export function nextFoodId(foods: Food[]): number {
-  if (foods.length === 0) return 1;
-  return Math.max(...foods.map((f) => f.id), 0) + 1;
+/** Próximo ID: usa a BD se `DATABASE_URL` estiver definido, senão o ficheiro JSON. */
+export async function nextFoodId(foods: Food[]): Promise<number> {
+  if (hasRemoteDatabase()) {
+    return nextFoodIdNeon();
+  }
+  return nextFoodIdFromFoods(foods);
+}
+
+export async function insertFood(food: Food): Promise<void> {
+  if (hasRemoteDatabase()) {
+    return insertFoodNeon(food);
+  }
+  const foods = await readFoodsFile();
+  foods.push(food);
+  return writeFoodsFile(foods);
+}
+
+export async function deleteFoodById(id: number): Promise<boolean> {
+  if (hasRemoteDatabase()) {
+    return deleteFoodNeon(id);
+  }
+  const foods = await readFoodsFile();
+  const next = foods.filter((f) => f.id !== id);
+  if (next.length === foods.length) return false;
+  await writeFoodsFile(next);
+  return true;
 }

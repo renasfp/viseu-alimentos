@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { readFoods, writeFoods } from "@/lib/db";
+import { deleteFoodById } from "@/lib/db";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -12,13 +12,11 @@ export async function DELETE(_request: Request, context: RouteContext) {
       return NextResponse.json({ error: "ID inválido." }, { status: 400 });
     }
 
-    const foods = await readFoods();
-    const next = foods.filter((f) => f.id !== id);
-    if (next.length === foods.length) {
+    const removed = await deleteFoodById(id);
+    if (!removed) {
       return NextResponse.json({ error: "Alimento não encontrado." }, { status: 404 });
     }
 
-    await writeFoods(next);
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error(e);

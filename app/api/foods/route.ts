@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { readFoods, writeFoods, nextFoodId } from "@/lib/db";
+import { insertFood, nextFoodId, readFoods } from "@/lib/db";
 import type { Food } from "@/lib/types";
 
 export async function GET() {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     const foods = await readFoods();
     const newFood: Food = {
-      id: nextFoodId(foods),
+      id: await nextFoodId(foods),
       name,
       category,
       market,
@@ -37,8 +37,7 @@ export async function POST(request: Request) {
         `https://via.placeholder.com/400x300/21808d/ffffff?text=${encodeURIComponent(name)}`,
     };
 
-    foods.push(newFood);
-    await writeFoods(foods);
+    await insertFood(newFood);
 
     return NextResponse.json(newFood, { status: 201 });
   } catch (e) {
