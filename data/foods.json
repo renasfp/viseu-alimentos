@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "name": "Banana",
+    "category": "Frutas e Legumes",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 2,
+    "name": "Leite Mimosa",
+    "category": "Laticínios",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 3,
+    "name": "Pão de Forma",
+    "category": "Padaria",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 4,
+    "name": "Frango",
+    "category": "Carnes e Peixes",
+    "market": "Aldi",
+    "image": "https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 5,
+    "name": "Arroz Agulha",
+    "category": "Mercearia",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 6,
+    "name": "Tomate",
+    "category": "Frutas e Legumes",
+    "market": "Mercadona",
+    "image": "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 7,
+    "name": "Iogurte Natural",
+    "category": "Laticínios",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 8,
+    "name": "Água Mineral",
+    "category": "Bebidas",
+    "market": "Minipreço",
+    "image": "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 9,
+    "name": "Bacalhau Congelado",
+    "category": "Congelados",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 10,
+    "name": "Maçã",
+    "category": "Frutas e Legumes",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 11,
+    "name": "Queijo Serra da Estrela",
+    "category": "Laticínios",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 12,
+    "name": "Azeite",
+    "category": "Mercearia",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 13,
+    "name": "Laranja",
+    "category": "Frutas e Legumes",
+    "market": "Mercadona",
+    "image": "https://images.unsplash.com/photo-1547514701-42782101795e?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 14,
+    "name": "Batata",
+    "category": "Frutas e Legumes",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 15,
+    "name": "Cenoura",
+    "category": "Frutas e Legumes",
+    "market": "Aldi",
+    "image": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 16,
+    "name": "Alface",
+    "category": "Frutas e Legumes",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 17,
+    "name": "Cebola",
+    "category": "Frutas e Legumes",
+    "market": "Minipreço",
+    "image": "https://images.unsplash.com/photo-1508747703725-719777637510?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 19,
+    "name": "Carne de Vaca",
+    "category": "Carnes e Peixes",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 20,
+    "name": "Carne de Porco",
+    "category": "Carnes e Peixes",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 21,
+    "name": "Salmão",
+    "category": "Carnes e Peixes",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 22,
+    "name": "Sardinha",
+    "category": "Carnes e Peixes",
+    "market": "Mercadona",
+    "image": "https://images.unsplash.com/photo-1534482421-64566f976cfa?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 25,
+    "name": "Feijão",
+    "category": "Mercearia",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 27,
+    "name": "Manteiga",
+    "category": "Laticínios",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 28,
+    "name": "Queijo Flamengo",
+    "category": "Laticínios",
+    "market": "Aldi",
+    "image": "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 29,
+    "name": "Ovos",
+    "category": "Laticínios",
+    "market": "Mercadona",
+    "image": "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 30,
+    "name": "Natas",
+    "category": "Laticínios",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 31,
+    "name": "Croissant",
+    "category": "Padaria",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 32,
+    "name": "Bolo de Arroz",
+    "category": "Padaria",
+    "market": "Minipreço",
+    "image": "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 34,
+    "name": "Sumo de Laranja",
+    "category": "Bebidas",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 35,
+    "name": "Coca-Cola",
+    "category": "Bebidas",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 36,
+    "name": "Cerveja Super Bock",
+    "category": "Bebidas",
+    "market": "Mercadona",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 37,
+    "name": "Vinho Tinto",
+    "category": "Bebidas",
+    "market": "Aldi",
+    "image": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 38,
+    "name": "Café",
+    "category": "Bebidas",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 39,
+    "name": "Gelado de Baunilha",
+    "category": "Congelados",
+    "market": "Continente",
+    "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 40,
+    "name": "Pizza Congelada",
+    "category": "Congelados",
+    "market": "Pingo Doce",
+    "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop"
+  },
+  {
+    "id": 42,
+    "name": "Espinafres Congelados",
+    "category": "Congelados",
+    "market": "Lidl",
+    "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=300&fit=crop"
+  }
+]
