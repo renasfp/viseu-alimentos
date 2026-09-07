@@ -34,6 +34,29 @@ pnpm dev
 
 Abrir http://localhost:3000 → redireciona para `/login`.
 
+## Importar alimentos do Pingo Doce (Open Food Facts)
+
+Popula a base de dados com produtos vendidos no Pingo Doce a partir da
+[Open Food Facts](https://world.openfoodfacts.org) (dados abertos, Open Database License).
+As imagens são referenciadas por URL (`images.openfoodfacts.org`), não são copiadas.
+
+```bash
+pnpm import:pingo-doce            # importa (~1.700 produtos); ignora os já existentes
+pnpm import:pingo-doce -- --update   # atualiza também as linhas já importadas
+pnpm import:pingo-doce -- --limit=100 # apenas os primeiros 100 (teste)
+```
+
+Mapeamento automático:
+
+- **Categoria** — heurística a partir das categorias/nome da Open Food Facts.
+- **Porção / calorias** — usa a dose declarada quando existe; senão normaliza para 100 g/ml.
+  Produtos sem calorias conhecidas ficam a `0` para preencheres depois.
+- **Ranking** — a partir do Nutri-Score (A→5★ … E→1★); sem Nutri-Score fica em 3.
+
+Os dados são um ponto de partida — convém rever categorias, porções e rankings depois.
+Cada linha importada guarda `barcode` e `source = 'openfoodfacts'`, por isso o script
+pode ser corrido várias vezes sem duplicar.
+
 ## Deploy (Vercel)
 
 1. Importar o repositório no Vercel.

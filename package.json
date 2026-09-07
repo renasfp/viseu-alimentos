@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import:pingo-doce": "node --env-file=.env.local scripts/import-pingo-doce.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",

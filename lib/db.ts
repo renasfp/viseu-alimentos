@@ -37,6 +37,10 @@ async function ensureSchema(): Promise<void> {
           updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `;
+      // Columns used by the bulk import script (scripts/import-pingo-doce.mjs).
+      await sql`ALTER TABLE foods ADD COLUMN IF NOT EXISTS barcode TEXT`;
+      await sql`ALTER TABLE foods ADD COLUMN IF NOT EXISTS source TEXT`;
+      await sql`CREATE UNIQUE INDEX IF NOT EXISTS foods_barcode_key ON foods (barcode) WHERE barcode IS NOT NULL`;
     })().catch((err) => {
       schemaReady = null;
       throw err;
