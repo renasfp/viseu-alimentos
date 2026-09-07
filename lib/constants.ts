@@ -6,6 +6,8 @@ export const CATEGORIES = [
   "Padaria",
   "Bebidas",
   "Congelados",
+  "Snacks",
+  "Cereais e Leguminosas",
 ] as const;
 
 export const MARKETS = [
@@ -15,4 +17,21 @@ export const MARKETS = [
   "Aldi",
   "Mercadona",
   "Minipreço",
+  "Auchan",
+  "Intermarché",
 ] as const;
+
+export const PORTION_TYPES = [
+  "g",
+  "ml",
+  "unidade",
+  "fatia",
+  "chávena",
+  "colher de sopa",
+  "colher de chá",
+  "pão",
+  "embalagem",
+] as const;
+
+export const MIN_RANKING = 1;
+export const MAX_RANKING = 5;

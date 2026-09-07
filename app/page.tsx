@@ -1,9 +1,5 @@
-import { FoodDatabase } from "@/components/FoodDatabase";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div className="container">
-      <FoodDatabase />
-    </div>
-  );
+export default function HomePage() {
+  redirect("/foods");
 }
